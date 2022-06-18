@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+		</style>
+	</head>
+	<body>
+		<script src="js/three.js"></script>
+		<script>
+			// Our Javascript will go here.
+            //1-base setup
+            const scene = new THREE.Scene(); //Here we set up our scene
+
+            const camera = new THREE.PerspectiveCamera( 75, //Here we set up our camera, todays choice Perspective Camera, 75 is the Field of View, FOV, value is in degrees
+            window.innerWidth / window.innerHeight, //this is the aspect ratio, we're using the width/height of the element. this should almost always be used
+            0.1, 1000 ); //these are the near and far clipping planes. anything closer than the near, or father than the far, will not be rendered
+
+            const renderer = new //setting up our render
+            THREE.WebGLRenderer(); //were using WebGLRenderer, but three.js comes with other to use as fallbacks
+
+            renderer.setSize( window.innerWidth, //here we set the size at which we want to render our app, 
+            window.innerHeight ); //using the size of the window is the best practice usually
+                //for performance heavy apps we could use smaller values like window.innerWidth/2 and window.innerHeight/2, which would render the app at quarter the size, and adding a (,false) will render it at half resolution
+
+            document.body.appendChild( //lastly here we add the renderer element to our html document. this is a <canvas> element
+                renderer.domElement );
+
+            //2-adding items
+            //Now we create a cube
+            const geometry = new THREE.BoxGeometry( 1, 1, 1 );//to create the cube, we need a BoxGeometry, this contains all the vertices and faces of the cube
+            const material = new THREE.MeshBasicMaterial( { color: 0x00ff00} );//we also need a material to colour/cover it, for this example were using MeshBasicMaterial and the color green
+            const cube = new THREE.Mesh( geometry, material );//third, a mesh, this object takes the geometry, applies the material, 
+            scene.add( cube );//finally this adds this brings everything by default to (0,0,0)
+
+            camera.position.z = 5;//so we move the camera slightly further away so its not at the EXACT same coordinates as our object
+
+            //3-Render the scene
+            //this renders the scene everytime the screen is refreshed, on a typical screen that means 60seconds, or 60fps
+            function animate() {
+                requestAnimationFrame( animate );
+                cube.rotation.x += 0.01;
+                cube.rotation.y += 0.01;
+                renderer.render( scene, camera );
+            }
+            animate();
+		</script>
+	</body>
+</html>
